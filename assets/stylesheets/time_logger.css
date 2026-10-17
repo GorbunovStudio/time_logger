@@ -70,6 +70,8 @@ div#time-logger-menu .icon-action {
     background-size: 16px 16px;
     background-position: center;
 }
+/* the list link is wrapped in a span: as an inline-block it sat on the text baseline, 2px too high */
+div#time-logger-menu .icon-list-action { display: block; }
 div#time-logger-menu a.icon-clock,
 div#time-logger-menu a.icon-start,
 div#time-logger-menu .time-not-running {
