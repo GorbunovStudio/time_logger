@@ -42,6 +42,41 @@ div#tl-timer-wrapper {
     display: inline-flex;
     margin: 0 10px 0 2px;
 }
+
+/* Redmine 7: time logger block in the top menu bar, right before the user menu */
+#top-menu #time-logger-menu {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-inline-end: 12px;
+    color: var(--oc-gray-1);
+}
+#top-menu #time-logger-menu a { color: var(--oc-gray-1); text-decoration: none; }
+#top-menu #time-logger-menu a:hover { color: var(--oc-white); }
+#top-menu #time-logger-menu .icon-action {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    padding: 0;
+    background-size: 14px 14px;
+}
+#top-menu #time-logger-menu a.icon-clock,
+#top-menu #time-logger-menu a.icon-start {
+    width: auto;
+    padding-inline-start: 18px;
+    background-repeat: no-repeat;
+    background-position: left center;
+}
+#top-menu #time-logger-menu span#time-logger-issue-id { margin-left: 0; }
+#top-menu #time-logger-menu div#tl-timer-wrapper { margin: 0 4px; }
+
+/* Redmine 7: the core .icon class no longer draws background icons */
+#context-menu a.icon-start, #context-menu a.icon-pause, #context-menu a.icon-stop {
+    background-repeat: no-repeat;
+    background-position: 6px center;
+    background-size: 16px 16px;
+    padding-inline-start: 28px;
+}
 /* use the one below if you want the time logger in the bottom oon it's own
 #time-logger-menu { position:fixed; bottom:0px; right:8px; background:black; padding:1em; }
 */

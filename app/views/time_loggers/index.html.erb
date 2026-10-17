@@ -23,7 +23,7 @@
                             <tr id="user-timetracker<%= time_logger.id %>" class="<%= cycle('odd', 'even') %>">
                                 <% if time_logger.zombie? %>
                                     <% has_zombie = true %>
-                                    <td class="zombie icon icon-warning"></td>
+                                    <td class="zombie"><span class="icon icon-warning"><%= sprite_icon('warning') %></span></td>
                                 <% else %>
                                     <td class="zombie"></td>
                                 <% end %>
@@ -31,11 +31,9 @@
                                 <td class="start-date"><%= format_time(time_logger[:started_on]) %></td>
                                 <td class="spent-time"><%= time_logger.time_spent_to_s %></td>
                                 <td class="buttons">
-                                    <%= link_to l(:time_logger_label_delete),
+                                    <%= link_to sprite_icon('del', l(:time_logger_label_delete)),
                                         {:controller => '/time_loggers', :action => 'delete', :id => time_logger.id },
-                                        :class => 'icon icon-del',
-                                        :remote => false,
-                                        :complete => "$('#{'user-timetracker' + time_logger.id.to_s}').update('<td colspan=\"0\" class=\"msg\">' + request.responseText + '</td>');"
+                                        :class => 'icon icon-del'
                                     %>
                                 </td>
                             </tr>
@@ -71,7 +69,7 @@
                             <tr id="all-timetracker<%= time_logger.id %>" class="<%= cycle('odd', 'even') %>">
                                 <% if time_logger.zombie? %>
                                     <% has_zombie = true %>
-                                    <td class="zombie icon icon-warning"></td>
+                                    <td class="zombie"><span class="icon icon-warning"><%= sprite_icon('warning') %></span></td>
                                 <% else %>
                                     <td class="zombie"></td>
                                 <% end %>
@@ -81,11 +79,10 @@
                                 <td class="spent-time"><%= time_logger.time_spent_to_s %></td>
                                 <td class="buttons">
                                     <% if User.current.allowed_to?(:delete_others_time_loggers, nil, :global => true) %>
-                                        <%= link_to l(:time_logger_label_delete),
+                                        <%# A plain link: the delete action only responds to HTML, an AJAX request gets 406 %>
+                                        <%= link_to sprite_icon('del', l(:time_logger_label_delete)),
                                             { :controller => '/time_loggers', :action => 'delete', :id => time_logger.id },
-                                            :class => 'icon icon-del',
-                                            :remote => true,
-                                            :complete => "$('#{'all-timetracker' + time_logger.id.to_s}').update('<td colspan=\"0\" class=\"msg\">' + request.responseText + '</td>');"
+                                            :class => 'icon icon-del'
                                         %>
                                     <% end %>
                                 </td>
@@ -101,5 +98,5 @@
 <% end %>
 
 <% if has_zombie %>
-    <p class="legend icon icon-warning"><%= l(:time_logger_zombie_legend) %></p>
+    <p class="legend"><span class="icon icon-warning"><%= sprite_icon('warning', l(:time_logger_zombie_legend)) %></span></p>
 <% end %>

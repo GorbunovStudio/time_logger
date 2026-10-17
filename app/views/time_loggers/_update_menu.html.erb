@@ -1,14 +1,16 @@
 <% if User.current.logged? %>
   <% @time_logger = time_logger_for(User.current) %>
   <%#
-    This script replaces the <a id="time-logger-menu">...</a> element by a span with the same id.
-    This is needed as we want several links for our time tracker menu item.
-    The span is populated with current time tracker state.
+    Redmine 7 renders the account menu inside the avatar dropdown, so this script adds
+    a <div id="time-logger-menu"> to the top menu bar, right before the user menu.
+    The div is populated with current time tracker state.
     (no AJAX request here, this allows to have the time tracker immediately visible)
   %>
     <%= javascript_tag "jQuery(document).ready(function($){
-    $('#time-logger-menu').html(
-    '<span id=\"time-logger-menu\">#{escape_javascript(((render :partial => 'time_loggers/embed_menu').delete "\n").strip)}</span>');
+    var menu = $('<div id=\"time-logger-menu\"></div>');
+    var account = $('#top-menu #account');
+    if (account.length) { menu.insertBefore(account); } else { $('#top-menu .profile-menu').prepend(menu); }
+    menu.html('#{escape_javascript(((render :partial => 'time_loggers/embed_menu').delete "\n").strip)}');
     });"
     %>
 <% end %>
