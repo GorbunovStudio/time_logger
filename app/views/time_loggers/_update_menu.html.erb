@@ -3,13 +3,25 @@
   <%#
     Redmine 7 renders the account menu inside the avatar dropdown, so this script adds
     a <div id="time-logger-menu"> to the top menu bar, right before the user menu.
+    On narrow screens (Redmine's mobile layout) the same div is moved to the flyout menu,
+    under the avatar, because the top menu bar is hidden there.
     The div is populated with current time tracker state.
     (no AJAX request here, this allows to have the time tracker immediately visible)
   %>
     <%= javascript_tag "jQuery(document).ready(function($){
     var menu = $('<div id=\"time-logger-menu\"></div>');
-    var account = $('#top-menu #account');
-    if (account.length) { menu.insertBefore(account); } else { $('#top-menu .profile-menu').prepend(menu); }
+    var mobile = window.matchMedia('(max-width: 899px)');
+    function placeTimeLoggerMenu() {
+      if (mobile.matches && $('.flyout-menu .flyout-menu__avatar').length) {
+        menu.insertAfter('.flyout-menu .flyout-menu__avatar');
+      } else if ($('#top-menu #account').length) {
+        menu.insertBefore('#top-menu #account');
+      } else {
+        $('#top-menu .profile-menu').prepend(menu);
+      }
+    }
+    placeTimeLoggerMenu();
+    if (mobile.addEventListener) { mobile.addEventListener('change', placeTimeLoggerMenu); }
     menu.html('#{escape_javascript(((render :partial => 'time_loggers/embed_menu').delete "\n").strip)}');
     });"
     %>
