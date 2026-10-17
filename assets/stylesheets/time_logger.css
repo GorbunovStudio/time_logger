@@ -43,39 +43,46 @@ div#tl-timer-wrapper {
     margin: 0 10px 0 2px;
 }
 
-/* Redmine 7: time logger block in the top menu bar, right before the user menu */
+/* Redmine 7: time logger block in the top menu bar, right before the user menu.
+   Bold white text and 16px icons, as the account menu looked before Redmine 7. */
 #top-menu #time-logger-menu {
     display: flex;
     align-items: center;
     gap: 6px;
-    margin-inline-end: 12px;
-    color: var(--oc-gray-1);
+    margin-inline-end: 14px;
+    color: var(--oc-white);
+    font-weight: bold;
+    line-height: 16px;
 }
-#top-menu #time-logger-menu a { color: var(--oc-gray-1); text-decoration: none; }
-#top-menu #time-logger-menu a:hover { color: var(--oc-white); }
+#top-menu #time-logger-menu a { color: var(--oc-white); text-decoration: none; }
+#top-menu #time-logger-menu a:hover { opacity: 0.8; }
 #top-menu #time-logger-menu .icon-action {
     display: inline-block;
-    width: 14px;
-    height: 14px;
+    width: 16px;
+    height: 16px;
     padding: 0;
-    background-size: 14px 14px;
+    background-size: 16px 16px;
+    background-position: center;
 }
 #top-menu #time-logger-menu a.icon-clock,
-#top-menu #time-logger-menu a.icon-start {
+#top-menu #time-logger-menu a.icon-start,
+#top-menu #time-logger-menu .time-not-running {
     width: auto;
-    padding-inline-start: 18px;
-    background-repeat: no-repeat;
+    padding-inline-start: 20px;
+    background-size: 16px 16px;
     background-position: left center;
+    background-repeat: no-repeat;
 }
 #top-menu #time-logger-menu span#time-logger-issue-id { margin-left: 0; }
-#top-menu #time-logger-menu div#tl-timer-wrapper { margin: 0 4px; }
+#top-menu #time-logger-menu div#tl-timer-wrapper { margin: 0 2px; font-variant-numeric: tabular-nums; }
 
-/* Redmine 7: the core .icon class no longer draws background icons */
+/* Redmine 7: the core .icon class no longer draws background icons.
+   Icon and text are aligned with the core context menu items (18px icon at 8px, text at 30px). */
 #context-menu a.icon-start, #context-menu a.icon-pause, #context-menu a.icon-stop {
     background-repeat: no-repeat;
-    background-position: 6px center;
+    background-position: 9px center;
     background-size: 16px 16px;
-    padding-inline-start: 28px;
+    padding-inline-start: 30px;
 }
 /* use the one below if you want the time logger in the bottom oon it's own
 #time-logger-menu { position:fixed; bottom:0px; right:8px; background:black; padding:1em; }
