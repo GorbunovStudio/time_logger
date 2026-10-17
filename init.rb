@@ -3,9 +3,9 @@ require File.expand_path 'lib/time_logger_application_helper_patch', __dir__
 
 Redmine::Plugin.register :time_logger do
   name 'Time Logger'
-  author 'Jérémie Delaitre, Jim McAleer, Dmitry Makurin'
+  author 'Jérémie Delaitre, Jim McAleer, Dmitry Makurin, Dmitry Beloglazov'
   description 'Time logger is a Redmine plugin to ease time tracking when working on an issue'
-  url 'https://github.com/red-soft-ru/time_logger'
+  url 'https://github.com/midnightdim/time_logger'
   version '2026.10.0'
 
   requires_redmine version_or_higher: '7.0.0'
