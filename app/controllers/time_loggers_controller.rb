@@ -1,31 +1,26 @@
 class TimeLoggersController < ApplicationController
+  before_action :require_login
   before_action :find_time_logger, :only => [:resume, :suspend, :stop, :delete]
-  after_action :apply_status_transition, only: :start,
-               if: proc { Setting.plugin_time_logger['status_transitions'].present? }
 
   def index
-    if User.current.nil?
-      @user_time_loggers = nil
-      @time_loggers = TimeLogger.all
-    else
-      @user_time_loggers = TimeLogger.where(user_id: User.current.id)
-      @time_loggers = TimeLogger.where('user_id != ?', User.current.id)
-    end
+    @user_time_loggers = TimeLogger.where(user_id: User.current.id)
+    @time_loggers = TimeLogger.joins(:issue).where.not(user_id: User.current.id).
+      where(issues: {project_id: Project.allowed_to(User.current, :view_others_time_loggers).select(:id)}).
+      merge(Issue.visible(User.current))
   end
 
   def start
-    head :bad_request and return if params[:issue_id].nil? || TimeLogger.exists?(:user_id => User.current.id)
+    @issue = Issue.visible.find_by(id: params[:issue_id])
+    return render_404 unless @issue
+    return render_403 unless User.current.allowed_to?(:log_time, @issue.project)
 
-    @time_logger = TimeLogger.new(:issue_id => params[:issue_id])
-    @time_logger.started_on = Time.current
-
-    respond_to do |format|
-      if @time_logger.save
-        format.js {render :partial => 'time_loggers/start'}
-      else
-        head :internal_server_error
-      end
+    ActiveRecord::Base.transaction do
+      User.where(id: User.current.id).lock.take!
+      return head :bad_request if TimeLogger.exists?(user_id: User.current.id)
+      @time_logger = TimeLogger.create!(issue: @issue)
+      apply_status_transition if Setting.plugin_time_logger['status_transitions'].present?
     end
+    render partial: 'time_loggers/start', formats: [:js]
   end
 
   def resume
@@ -72,7 +67,7 @@ class TimeLoggersController < ApplicationController
 
     redirect_to_new_time_entry = Setting.plugin_time_logger['redirect_to_new_time_entry']
 
-    if redirect_to_new_time_entry
+    if %w[1 true on].include?(redirect_to_new_time_entry.to_s)
       redirect_to controller: 'timelog',
                   action: 'new',
                   issue_id: issue_id,
@@ -108,6 +103,14 @@ class TimeLoggersController < ApplicationController
 
   def find_time_logger
     @time_logger = TimeLogger.find(params[:id])
+    if @time_logger.user_id != User.current.id
+      allowed = action_name == 'delete' && @time_logger.issue&.visible? &&
+        User.current.allowed_to?(:delete_others_time_loggers, @time_logger.issue.project)
+      return render_403 unless allowed
+    end
+    unless action_name == 'delete'
+      return render_403 unless @time_logger.issue&.visible? && User.current.allowed_to?(:log_time, @time_logger.issue.project)
+    end
   rescue ActiveRecord::RecordNotFound
     respond_to do |format|
       format.html do

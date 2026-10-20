@@ -1,1 +1,2 @@
-$('#time-logger-suspend-btn').replaceWith('<%= escape_javascript(render :partial => 'time_loggers/suspend', :formats => [:html]) %>');
+pause_timer();
+$('#time-logger-menu').html('<%= escape_javascript(render :partial => 'time_loggers/embed_menu', :formats => [:html]) %>');

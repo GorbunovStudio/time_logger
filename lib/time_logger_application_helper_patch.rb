@@ -42,7 +42,7 @@ module TimeLoggerApplicationHelperPatch
         :class => 'icon-action icon-pause-action',
         :id => 'time-logger-suspend-btn',
         :title => l(:suspend_time_logger),
-        :onclick => %{pause_timer();},
+        :method => :post,
         :remote => true
       )
     end
@@ -54,6 +54,7 @@ module TimeLoggerApplicationHelperPatch
         :class => 'icon-action icon-start-action',
         :id => 'time-logger-resume-btn',
         :title => l(:resume_time_logger),
+        :method => :post,
         :remote => true
       )
 

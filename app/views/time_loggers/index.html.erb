@@ -33,7 +33,7 @@
                                 <td class="buttons">
                                     <%= link_to sprite_icon('del', l(:time_logger_label_delete)),
                                         {:controller => '/time_loggers', :action => 'delete', :id => time_logger.id },
-                                        :class => 'icon icon-del'
+                                        :class => 'icon icon-del', :method => :post
                                     %>
                                 </td>
                             </tr>
@@ -82,7 +82,7 @@
                                         <%# A plain link: the delete action only responds to HTML, an AJAX request gets 406 %>
                                         <%= link_to sprite_icon('del', l(:time_logger_label_delete)),
                                             { :controller => '/time_loggers', :action => 'delete', :id => time_logger.id },
-                                            :class => 'icon icon-del'
+                                            :class => 'icon icon-del', :method => :post
                                         %>
                                     <% end %>
                                 </td>

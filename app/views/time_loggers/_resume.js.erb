@@ -1,2 +1,2 @@
+$('#time-logger-menu').html('<%= escape_javascript(render :partial => 'time_loggers/embed_menu', :formats => [:html]) %>');
 start_timer(<%= @time_logger.total_time[:seconds] %>, <%= @time_logger.total_time[:minutes] %>, <%= @time_logger.total_time[:hours] %>);
-$('#time-logger-resume-btn').replaceWith('<%= escape_javascript(render :partial => 'time_loggers/resume', :formats => [:html]) %>');

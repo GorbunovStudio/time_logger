@@ -5,7 +5,7 @@
 <% elsif !(@issue.nil? || @issue.new_record?) && User.current.allowed_to?(:log_time, @issue.project) %>
     <%# No time tracker is running, but the user look at an issue and he has the rights to track time on it %>
     <%# Display the start time tracker action on this issue %>
-  <%= link_to(time_logger_start_path(:issue_id => @issue.id), :method => :get, :remote => true, :class => 'icon icon-start icon-action') do %>
+  <%= link_to(time_logger_start_path(:issue_id => @issue.id), :method => :post, :remote => true, :class => 'icon icon-start icon-action') do %>
     <%= content_tag(:span, %{#{l(:start_time_logger)} ##{@issue.id}}, :id => 'time-logger-issue-id') %>
   <% end %>
 <% elsif User.current.allowed_to?(:log_time, nil, :global => true) %>
