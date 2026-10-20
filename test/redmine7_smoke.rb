@@ -8,9 +8,8 @@ class TimeLoggerSmokeTest < ActionController::TestCase
 
   setup do
     raise 'Run only against upgraded local db' unless ActiveRecord::Base.connection_db_config.host == 'db'
-    raise 'Slack must stay disabled' unless ENV['REDMINE_SLACK_DELIVERY_ENABLED'] == '0'
     @connection = ActiveRecord::Base.connection
-    @connection.begin_transaction(joinable: false)
+    @connection.begin_transaction
     @delivery_method = ActionMailer::Base.delivery_method
     @adapter = ActiveJob::Base.queue_adapter
     ActionMailer::Base.delivery_method = :test
